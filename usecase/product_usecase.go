@@ -37,3 +37,11 @@ func (p *ProductUsecase) UpdateProduct(product model.Product) error {
 func (p *ProductUsecase) DeleteProduct(id int) error {
 	return p.repository.DeleteProduct(id)
 }
+
+func (p *ProductUsecase) AddProductFile(productID int, fileURL string) error {
+	return p.repository.AddProductFile(productID, fileURL)
+}
+
+func (p *ProductUsecase) GetProductFiles(productID int) ([]string, error) {
+	return p.repository.GetProductFiles(productID)
+}

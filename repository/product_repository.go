@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"go-api/model"
+	"go-api/service"
+	"strings"
 )
 
 type ProductRepository struct {
@@ -93,6 +95,7 @@ func (p *ProductRepository) UpdateProduct(product model.Product) error {
 func (p *ProductRepository) GetProductByID(id int) (model.Product, error) {
 	var product model.Product
 
+	// Get product details
 	query := "SELECT id, product_name, price FROM product WHERE id = $1"
 	err := p.connection.QueryRow(query, id).Scan(&product.ID, &product.ProductName, &product.Price)
 
@@ -101,9 +104,15 @@ func (p *ProductRepository) GetProductByID(id int) (model.Product, error) {
 	}
 
 	if err != nil {
-		fmt.Println(err)
 		return model.Product{}, err
 	}
+
+	// Get product files
+	files, err := p.GetProductFiles(id)
+	if err != nil {
+		return model.Product{}, err
+	}
+	product.Files = files
 
 	return product, nil
 }
@@ -136,4 +145,50 @@ func (p *ProductRepository) DeleteProduct(id int) error {
 	}
 
 	return nil
+}
+
+func (p *ProductRepository) AddProductFile(productID int, fileURL string) error {
+	query := `
+		INSERT INTO product_files (product_id, file_url)
+		VALUES ($1, $2)
+	`
+	_, err := p.connection.Exec(query, productID, fileURL)
+	return err
+}
+
+func (p *ProductRepository) GetProductFiles(productID int) ([]string, error) {
+	query := `
+		SELECT file_url FROM product_files
+		WHERE product_id = $1
+	`
+	rows, err := p.connection.Query(query, productID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var files []string
+	s3Service, err := service.NewS3Service()
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var fileURL string
+		if err := rows.Scan(&fileURL); err != nil {
+			return nil, err
+		}
+
+		// Extrair a chave da URL do S3
+		key := strings.TrimPrefix(fileURL, fmt.Sprintf("https://%s.s3.amazonaws.com/", s3Service.Bucket))
+
+		// Gerar URL assinada
+		signedURL, err := s3Service.GetSignedURL(key)
+		if err != nil {
+			return nil, err
+		}
+
+		files = append(files, signedURL)
+	}
+	return files, nil
 }
