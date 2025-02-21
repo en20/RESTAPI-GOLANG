@@ -2,11 +2,13 @@
 import { useState } from "react";
 
 interface FileUploadProps {
-  disciplinaId: string;
+  productId?: string;
+  disciplinaId?: string;
   onUploadSuccess: () => void;
 }
 
 export default function FileUpload({
+  productId,
   disciplinaId,
   onUploadSuccess,
 }: FileUploadProps) {
@@ -69,31 +71,35 @@ export default function FileUpload({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-gray-700 mb-2">Nome da Prova</label>
+        <label className="block text-gray-700 text-sm font-medium mb-2">
+          Nome da Prova
+        </label>
         <input
           type="text"
           value={provaName}
           onChange={(e) => setProvaName(e.target.value)}
           placeholder="Ex: Prova 1 - 2023.1"
-          className="w-full px-3 py-2 border rounded-md"
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled={uploading}
         />
       </div>
 
       <div>
-        <label className="block text-gray-700 mb-2">Selecionar Arquivo</label>
+        <label className="block text-gray-700 text-sm font-medium mb-2">
+          Arquivo da Prova
+        </label>
         <input
           type="file"
           onChange={handleFileSelect}
           disabled={uploading}
-          className="mt-1 block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:bg-blue-100"
+          className="w-full text-sm text-gray-500
+            file:mr-4 file:py-2 file:px-4
+            file:rounded-full file:border-0
+            file:text-sm file:font-semibold
+            file:bg-blue-50 file:text-blue-700
+            hover:file:bg-blue-100"
         />
       </div>
 
@@ -103,20 +109,20 @@ export default function FileUpload({
         className={`w-full py-2 px-4 rounded-md text-white font-medium
           ${
             uploading || !selectedFile || !provaName.trim()
-              ? "bg-gray-400"
+              ? "bg-gray-400 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600"
           }`}
       >
-        {uploading ? "Anexando..." : "Cadastrar Prova"}
+        {uploading ? "Enviando..." : "Enviar Prova"}
       </button>
 
       {message && (
         <p
-          className={`mt-2 ${
-            uploading
-              ? "text-blue-600"
-              : message.includes("sucesso")
+          className={`text-sm ${
+            message.includes("sucesso")
               ? "text-green-600"
+              : message.includes("anexando")
+              ? "text-blue-600"
               : "text-red-600"
           }`}
         >

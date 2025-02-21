@@ -16,5 +16,5 @@ export interface Disciplina {
   codigo: string;
   nome: string;
   descricao: string;
-  provas?: Prova[];
+  provas: Prova[];
 } 
