@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Disciplina } from "./types";
+import { Disciplina } from "../types";
 
 export default function DisciplinaList() {
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
@@ -24,6 +24,7 @@ export default function DisciplinaList() {
           Nova Disciplina
         </Link>
       </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {disciplinas.map((disciplina) => (
           <Link
@@ -37,11 +38,6 @@ export default function DisciplinaList() {
               <p className="text-gray-500 mt-2 line-clamp-2">
                 {disciplina.descricao}
               </p>
-              {disciplina.provas && disciplina.provas.length > 0 && (
-                <p className="text-blue-500 mt-2">
-                  {disciplina.provas.length} prova(s) disponível(is)
-                </p>
-              )}
             </div>
           </Link>
         ))}

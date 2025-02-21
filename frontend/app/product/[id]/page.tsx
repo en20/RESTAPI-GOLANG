@@ -71,7 +71,7 @@ export default function ProductDetail({
                     <a
                       href={`http://localhost:8080/download?key=${encodeURIComponent(
                         file.split(".com/")[1]
-                      )}`}
+                      )}/file`}
                       className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
                     >
                       <svg

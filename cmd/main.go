@@ -18,6 +18,11 @@ func main() {
 		panic(err)
 	}
 
+	// Disciplina
+	DisciplinaRepository := repository.NewDisciplinaRepository(dbConnection)
+	DisciplinaUsecase := usecase.NewDisciplinaUsecase(DisciplinaRepository)
+	DisciplinaController := controller.NewDisciplinaController(DisciplinaUsecase)
+
 	ProductRepository := repository.NewProductRepository(dbConnection)
 	ProductUsecase := usecase.NewProductUsecase(ProductRepository)
 	ProductController := controller.NewProductController(ProductUsecase)
@@ -45,6 +50,16 @@ func main() {
 	server.PUT("/product/:id", ProductController.UpdateProduct)
 	server.DELETE("/product/:id", ProductController.DeleteProduct)
 	server.POST("/product/:id/files", ProductController.UploadProductFiles)
-	server.GET("/download", ProductController.DownloadFile)
+
+	// Rotas da Disciplina
+	server.GET("/disciplinas", DisciplinaController.GetDisciplinas)
+	server.POST("/disciplina", DisciplinaController.CreateDisciplina)
+	server.GET("/disciplina/:id", DisciplinaController.GetDisciplinaByID)
+	server.PUT("/disciplina/:id", DisciplinaController.UpdateDisciplina)
+	server.DELETE("/disciplina/:id", DisciplinaController.DeleteDisciplina)
+	server.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
+	server.GET("/download/prova", DisciplinaController.DownloadProva)
+	server.GET("/download/file", ProductController.DownloadFile)
+
 	server.Run(":8080")
 }
