@@ -194,9 +194,24 @@ export default function DisciplinaDetail({
                       >
                         <span className="text-gray-700">{prova.nome}</span>
                         <a
-                          href={`http://localhost:8080/disciplina/download?key=${encodeURIComponent(
-                            prova.url.split("amazonaws.com/")[1]
+                          href={`http://localhost:8080/download/prova?key=${encodeURIComponent(
+                            prova.url.split("?")[0].includes("amazonaws.com")
+                              ? prova.url
+                                  .split("amazonaws.com/")[1]
+                                  .split("?")[0]
+                              : prova.url.split("?")[0]
                           )}`}
+                          onClick={(e) => {
+                            console.log("URL completa:", prova.url);
+                            console.log(
+                              "Key extraída:",
+                              prova.url.split("?")[0].includes("amazonaws.com")
+                                ? prova.url
+                                    .split("amazonaws.com/")[1]
+                                    .split("?")[0]
+                                : prova.url.split("?")[0]
+                            );
+                          }}
                           className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
                         >
                           <svg
