@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <FaGraduationCap size={24} className="text-blue-600" />
               <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 text-transparent bg-clip-text">
-                UFC Provas
+                Leite Provas
               </span>
             </div>
             <p className="mt-4 text-gray-500 max-w-md">

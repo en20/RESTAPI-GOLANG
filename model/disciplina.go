@@ -5,6 +5,7 @@ type Disciplina struct {
 	Codigo    string  `json:"codigo"`
 	Nome      string  `json:"nome"`
 	Descricao string  `json:"descricao"`
+	Semestre  int     `json:"semestre"`
 	Provas    []Prova `json:"provas"`
 }
 

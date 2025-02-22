@@ -17,7 +17,7 @@ func NewDisciplinaRepository(connection *sql.DB) DisciplinaRepository {
 }
 
 func (d *DisciplinaRepository) GetDisciplinas() ([]model.Disciplina, error) {
-	query := "SELECT id, codigo, nome, descricao FROM disciplina ORDER BY id ASC"
+	query := "SELECT id, codigo, nome, descricao, semestre FROM disciplina ORDER BY id ASC"
 	rows, err := d.connection.Query(query)
 	if err != nil {
 		return nil, err
@@ -27,7 +27,7 @@ func (d *DisciplinaRepository) GetDisciplinas() ([]model.Disciplina, error) {
 	var disciplinas []model.Disciplina
 	for rows.Next() {
 		var disciplina model.Disciplina
-		err = rows.Scan(&disciplina.ID, &disciplina.Codigo, &disciplina.Nome, &disciplina.Descricao)
+		err = rows.Scan(&disciplina.ID, &disciplina.Codigo, &disciplina.Nome, &disciplina.Descricao, &disciplina.Semestre)
 		if err != nil {
 			return nil, err
 		}
@@ -40,11 +40,17 @@ func (d *DisciplinaRepository) GetDisciplinas() ([]model.Disciplina, error) {
 func (d *DisciplinaRepository) CreateDisciplina(disciplina model.Disciplina) (int, error) {
 	var id int
 	query := `
-		INSERT INTO disciplina (codigo, nome, descricao)
-		VALUES ($1, $2, $3)
+		INSERT INTO disciplina (codigo, nome, descricao, semestre)
+		VALUES ($1, $2, $3, $4)
 		RETURNING id
 	`
-	err := d.connection.QueryRow(query, disciplina.Codigo, disciplina.Nome, disciplina.Descricao).Scan(&id)
+	err := d.connection.QueryRow(
+		query,
+		disciplina.Codigo,
+		disciplina.Nome,
+		disciplina.Descricao,
+		disciplina.Semestre,
+	).Scan(&id)
 	if err != nil {
 		return 0, err
 	}
@@ -54,9 +60,9 @@ func (d *DisciplinaRepository) CreateDisciplina(disciplina model.Disciplina) (in
 
 func (d *DisciplinaRepository) GetDisciplinaByID(id int) (model.Disciplina, error) {
 	var disciplina model.Disciplina
-	query := "SELECT id, codigo, nome, descricao FROM disciplina WHERE id = $1"
+	query := "SELECT id, codigo, nome, descricao, semestre FROM disciplina WHERE id = $1"
 	err := d.connection.QueryRow(query, id).Scan(
-		&disciplina.ID, &disciplina.Codigo, &disciplina.Nome, &disciplina.Descricao,
+		&disciplina.ID, &disciplina.Codigo, &disciplina.Nome, &disciplina.Descricao, &disciplina.Semestre,
 	)
 	if err == sql.ErrNoRows {
 		return model.Disciplina{}, fmt.Errorf("disciplina com ID %d não encontrada", id)
@@ -78,11 +84,15 @@ func (d *DisciplinaRepository) GetDisciplinaByID(id int) (model.Disciplina, erro
 func (d *DisciplinaRepository) UpdateDisciplina(disciplina model.Disciplina) error {
 	query := `
 		UPDATE disciplina 
-		SET codigo = $1, nome = $2, descricao = $3
-		WHERE id = $4
+		SET codigo = $1, nome = $2, descricao = $3, semestre = $4
+		WHERE id = $5
 	`
 	result, err := d.connection.Exec(query,
-		disciplina.Codigo, disciplina.Nome, disciplina.Descricao, disciplina.ID,
+		disciplina.Codigo,
+		disciplina.Nome,
+		disciplina.Descricao,
+		disciplina.Semestre,
+		disciplina.ID,
 	)
 	if err != nil {
 		return err
