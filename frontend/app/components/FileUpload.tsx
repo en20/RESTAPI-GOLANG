@@ -20,7 +20,15 @@ export default function FileUpload({
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      setSelectedFile(files[0]);
+      const file = files[0];
+      if (file.type !== "application/pdf") {
+        setMessage("Por favor, selecione apenas arquivos PDF");
+        setSelectedFile(null);
+        event.target.value = ""; // Limpa o input
+        return;
+      }
+      setSelectedFile(file);
+      setMessage(""); // Limpa mensagens anteriores
     }
   };
 
@@ -90,9 +98,13 @@ export default function FileUpload({
         <label className="block text-gray-700 text-sm font-medium mb-2">
           Arquivo da Prova
         </label>
+        <p className="text-sm text-gray-500 mb-2">
+          Somente arquivos PDF são aceitos
+        </p>
         <input
           type="file"
           onChange={handleFileSelect}
+          accept=".pdf,application/pdf"
           disabled={uploading}
           className="w-full text-sm text-gray-500
             file:mr-4 file:py-2 file:px-4
