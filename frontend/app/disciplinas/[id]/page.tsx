@@ -8,8 +8,7 @@ import LoadingPulse from "../../components/LoadingPulse";
 import SearchBar from "../../components/SearchBar";
 import Modal from "../../components/Modal";
 import { FaBook, FaCode, FaFileAlt, FaPlus } from "react-icons/fa";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { API_URL } from "../../config";
 
 export default function DisciplinaDetail({
   params,
@@ -30,18 +29,14 @@ export default function DisciplinaDetail({
 
   const fetchDisciplina = async () => {
     try {
+      console.log(
+        "Fazendo fetch da disciplina:",
+        `${API_URL}/disciplina/${id}`
+      );
       const res = await fetch(`${API_URL}/disciplina/${id}`);
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new TypeError("Oops, we haven't got JSON!");
-      }
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
-      if (!data) {
-        throw new Error("No data received");
-      }
+      console.log("Dados da disciplina recebidos:", data);
       setDisciplina(data);
       setFormData({
         codigo: data.codigo || "",

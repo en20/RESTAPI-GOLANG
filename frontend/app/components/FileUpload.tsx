@@ -1,13 +1,12 @@
 "use client";
 import { useState } from "react";
+import { API_URL } from "../config";
 
 interface FileUploadProps {
   productId?: string;
   disciplinaId?: string;
   onUploadSuccess: () => void;
 }
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function FileUpload({
   productId,
