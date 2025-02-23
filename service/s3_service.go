@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"io"
 	"mime/multipart"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 )
@@ -86,4 +89,28 @@ func (s *S3Service) GetFileContent(key string) ([]byte, error) {
 	defer result.Body.Close()
 
 	return io.ReadAll(result.Body)
+}
+
+func (s *S3Service) FileExists(url string) (bool, error) {
+	// Extrair a chave do S3 da URL
+	key := strings.TrimPrefix(url, os.Getenv("AWS_S3_URL")+"/")
+
+	_, err := s.s3Client.HeadObject(&s3.HeadObjectInput{
+		Bucket: aws.String(os.Getenv("AWS_BUCKET_NAME")),
+		Key:    aws.String(key),
+	})
+
+	if err != nil {
+		if aerr, ok := err.(awserr.Error); ok {
+			switch aerr.Code() {
+			case "NotFound":
+				return false, nil
+			default:
+				return false, err
+			}
+		}
+		return false, err
+	}
+
+	return true, nil
 }

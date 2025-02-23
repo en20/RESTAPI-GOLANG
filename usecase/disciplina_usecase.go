@@ -45,3 +45,11 @@ func (d *DisciplinaUsecase) AddDisciplinaProva(disciplinaID int, nomeProva strin
 func (d *DisciplinaUsecase) GetDisciplinaProvas(disciplinaID int) ([]model.Prova, error) {
 	return d.repository.GetDisciplinaProvas(disciplinaID)
 }
+
+func (d *DisciplinaUsecase) GetAllProvas() ([]model.Prova, error) {
+	return d.repository.GetAllProvas()
+}
+
+func (d *DisciplinaUsecase) DeleteProva(provaID int) error {
+	return d.repository.DeleteProva(provaID)
+}

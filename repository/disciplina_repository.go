@@ -178,3 +178,29 @@ func (d *DisciplinaRepository) GetDisciplinaProvas(disciplinaID int) ([]model.Pr
 
 	return provas, nil
 }
+
+func (d *DisciplinaRepository) GetAllProvas() ([]model.Prova, error) {
+	query := `SELECT id, disciplina_id, nome_prova, url_prova FROM disciplina_provas`
+	rows, err := d.connection.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var provas []model.Prova
+	for rows.Next() {
+		var prova model.Prova
+		err := rows.Scan(&prova.ID, &prova.DisciplinaID, &prova.Nome, &prova.URL)
+		if err != nil {
+			return nil, err
+		}
+		provas = append(provas, prova)
+	}
+	return provas, nil
+}
+
+func (d *DisciplinaRepository) DeleteProva(provaID int) error {
+	query := `DELETE FROM disciplina_provas WHERE id = $1`
+	_, err := d.connection.Exec(query, provaID)
+	return err
+}

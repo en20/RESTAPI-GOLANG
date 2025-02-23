@@ -62,6 +62,7 @@ func main() {
 	server.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
 	server.GET("/download/prova", DisciplinaController.DownloadProva)
 	server.GET("/download/file", ProductController.DownloadFile)
+	server.POST("/sync-provas", DisciplinaController.SyncProvas)
 
 	server.GET("/test-db", func(c *gin.Context) {
 		var count int

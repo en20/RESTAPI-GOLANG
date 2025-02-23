@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 
+	"log"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -165,4 +167,39 @@ func (d *disciplinaController) DownloadProva(c *gin.Context) {
 	filename := strings.Split(key, "/")[len(strings.Split(key, "/"))-1]
 	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s", filename))
 	c.Data(http.StatusOK, "application/octet-stream", content)
+}
+
+func (d *disciplinaController) SyncProvas(ctx *gin.Context) {
+	// 1. Pegar todas as provas do banco
+	provas, err := d.disciplinaUsecase.GetAllProvas()
+	if err != nil {
+		ctx.JSON(500, gin.H{"error": "Erro ao buscar provas"})
+		return
+	}
+
+	// 2. Inicializar serviço S3
+	s3Service, err := service.NewS3Service()
+	if err != nil {
+		ctx.JSON(500, gin.H{"error": "Erro ao inicializar serviço S3"})
+		return
+	}
+
+	// 3. Para cada prova, verificar se existe no S3
+	for _, prova := range provas {
+		exists, err := s3Service.FileExists(prova.URL)
+		if err != nil {
+			log.Printf("Erro ao verificar prova %d: %v", prova.ID, err)
+			continue
+		}
+
+		if !exists {
+			// Se o arquivo não existe no S3, deletar do banco
+			err := d.disciplinaUsecase.DeleteProva(prova.ID)
+			if err != nil {
+				log.Printf("Erro ao deletar prova %d: %v", prova.ID, err)
+			}
+		}
+	}
+
+	ctx.JSON(200, gin.H{"message": "Sincronização concluída"})
 }
