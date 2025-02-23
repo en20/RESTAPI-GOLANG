@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Disciplina } from "../../types";
+import { Disciplina, Prova } from "../../types";
 import FileUpload from "../../components/FileUpload";
 import { API_URL } from "../../config";
 
@@ -21,6 +21,11 @@ export default function DisciplinaDetail({
       const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
+      // Filtrar provas válidas
+      data.provas =
+        data.provas?.filter(
+          (prova: Prova) => prova.url && prova.url.trim() !== ""
+        ) || [];
       console.log("Dados atualizados recebidos:", data);
       setDisciplina(data);
       setError(null);

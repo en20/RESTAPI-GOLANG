@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Disciplina } from "../types";
+import { Disciplina, Prova } from "../types";
 import SearchBar from "../components/SearchBar";
 import DisciplinaCard from "../components/DisciplinaCard";
 import LoadingPulse from "../components/LoadingPulse";
@@ -29,6 +29,11 @@ export default function DisciplinasPage() {
           data.map(async (disciplina: Disciplina) => {
             const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
             const disciplinaCompleta = await res.json();
+            // Filtrar apenas provas válidas (que ainda existem no S3)
+            disciplinaCompleta.provas =
+              disciplinaCompleta.provas?.filter(
+                (prova: Prova) => prova.url && prova.url.trim() !== ""
+              ) || [];
             return disciplinaCompleta;
           })
         );

@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Disciplina } from "../../types";
+import { Disciplina, Prova } from "../../types";
 import DisciplinaCard from "../../components/DisciplinaCard";
 import LoadingPulse from "../../components/LoadingPulse";
 import { FaGraduationCap } from "react-icons/fa";
@@ -30,7 +30,11 @@ export default function SemestrePage() {
             const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
             if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const disciplinaCompleta = await res.json();
-            console.log("Disciplina completa:", disciplinaCompleta);
+            // Filtrar apenas provas válidas
+            disciplinaCompleta.provas =
+              disciplinaCompleta.provas?.filter(
+                (prova: Prova) => prova.url && prova.url.trim() !== ""
+              ) || [];
             return disciplinaCompleta;
           })
         );
