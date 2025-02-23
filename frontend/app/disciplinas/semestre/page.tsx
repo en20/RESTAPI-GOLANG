@@ -4,8 +4,7 @@ import { Disciplina } from "../../types";
 import DisciplinaCard from "../../components/DisciplinaCard";
 import LoadingPulse from "../../components/LoadingPulse";
 import { FaGraduationCap } from "react-icons/fa";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { API_URL } from "../../config";
 
 export default function SemestrePage() {
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
@@ -13,23 +12,34 @@ export default function SemestrePage() {
   const [selectedSemestre, setSelectedSemestre] = useState<number>(1);
 
   useEffect(() => {
+    console.log(
+      "Fazendo fetch de disciplinas por semestre:",
+      `${API_URL}/disciplinas`
+    );
     fetch(`${API_URL}/disciplinas`)
-      .then((res) => res.json())
+      .then((res) => {
+        console.log("Status da resposta:", res.status);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+      })
       .then(async (data) => {
         console.log("Dados iniciais:", data);
         const disciplinasComProvas = await Promise.all(
           data.map(async (disciplina: Disciplina) => {
+            console.log(`Buscando detalhes da disciplina ${disciplina.id}`);
             const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
             const disciplinaCompleta = await res.json();
             console.log("Disciplina completa:", disciplinaCompleta);
             return disciplinaCompleta;
           })
         );
+        console.log("Todas as disciplinas carregadas:", disciplinasComProvas);
         setDisciplinas(disciplinasComProvas);
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching disciplinas:", err);
+        console.error("Erro ao carregar disciplinas:", err);
         setLoading(false);
       });
   }, []);
