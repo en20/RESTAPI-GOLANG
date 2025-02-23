@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Disciplina } from "../../types";
 import FileUpload from "../../components/FileUpload";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function DisciplinaDetail({
   initialData,
 }: {
@@ -13,9 +15,7 @@ export default function DisciplinaDetail({
 
   const fetchDisciplina = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:8080/disciplina/${disciplina.id}`
-      );
+      const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       const data = await res.json();
       setDisciplina(data);

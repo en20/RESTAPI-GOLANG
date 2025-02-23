@@ -4,6 +4,8 @@ import { use } from "react";
 import { Product } from "../../types";
 import FileUpload from "../../components/FileUpload";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function ProductDetail({
   params,
 }: {
@@ -14,7 +16,7 @@ export default function ProductDetail({
 
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/product/${id}`);
+      const res = await fetch(`${API_URL}/product/${id}`);
       const data = await res.json();
       setProduct(data);
     } catch (err) {
@@ -69,7 +71,7 @@ export default function ProductDetail({
                       </svg>
                     </a>
                     <a
-                      href={`http://localhost:8080/download?key=${encodeURIComponent(
+                      href={`${API_URL}/download?key=${encodeURIComponent(
                         file.split(".com/")[1]
                       )}/file`}
                       className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"

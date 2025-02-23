@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function NovaDisciplina() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ export default function NovaDisciplina() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/disciplina", {
+      const response = await fetch(`${API_URL}/disciplina`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
