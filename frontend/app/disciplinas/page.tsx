@@ -6,6 +6,8 @@ import DisciplinaCard from "../components/DisciplinaCard";
 import LoadingPulse from "../components/LoadingPulse";
 import { FaSearch, FaGraduationCap } from "react-icons/fa";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function DisciplinasPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
@@ -13,15 +15,13 @@ export default function DisciplinasPage() {
 
   useEffect(() => {
     // Primeiro, buscar todas as disciplinas
-    fetch("http://localhost:8080/disciplinas")
+    fetch(`${API_URL}/disciplinas`)
       .then((res) => res.json())
       .then(async (data) => {
         // Para cada disciplina, buscar suas provas
         const disciplinasComProvas = await Promise.all(
           data.map(async (disciplina: Disciplina) => {
-            const res = await fetch(
-              `http://localhost:8080/disciplina/${disciplina.id}`
-            );
+            const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
             const disciplinaCompleta = await res.json();
             return disciplinaCompleta;
           })

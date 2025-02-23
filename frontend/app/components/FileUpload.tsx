@@ -7,6 +7,8 @@ interface FileUploadProps {
   onUploadSuccess: () => void;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function FileUpload({
   productId,
   disciplinaId,
@@ -49,7 +51,7 @@ export default function FileUpload({
 
     try {
       const response = await fetch(
-        `http://localhost:8080/disciplina/${disciplinaId}/provas`,
+        `${API_URL}/disciplina/${disciplinaId}/provas`,
         {
           method: "POST",
           body: formData,

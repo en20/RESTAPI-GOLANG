@@ -6,6 +6,8 @@ import (
 	"go-api/repository"
 	"go-api/usecase"
 
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,7 +32,7 @@ func main() {
 	server.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
@@ -61,5 +63,10 @@ func main() {
 	server.GET("/download/prova", DisciplinaController.DownloadProva)
 	server.GET("/download/file", ProductController.DownloadFile)
 
-	server.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	server.Run(":" + port)
 }

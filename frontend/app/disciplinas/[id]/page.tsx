@@ -9,6 +9,8 @@ import SearchBar from "../../components/SearchBar";
 import Modal from "../../components/Modal";
 import { FaBook, FaCode, FaFileAlt, FaPlus } from "react-icons/fa";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export default function DisciplinaDetail({
   params,
 }: {
@@ -28,7 +30,7 @@ export default function DisciplinaDetail({
 
   const fetchDisciplina = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/disciplina/${id}`);
+      const res = await fetch(`${API_URL}/disciplina/${id}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
