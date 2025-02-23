@@ -14,10 +14,14 @@ export default function DisciplinasPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Primeiro, buscar todas as disciplinas
+    console.log("Fazendo fetch de:", `${API_URL}/disciplinas`);
     fetch(`${API_URL}/disciplinas`)
-      .then((res) => res.json())
+      .then((res) => {
+        console.log("Status da resposta:", res.status);
+        return res.json();
+      })
       .then(async (data) => {
+        console.log("Dados recebidos:", data);
         // Para cada disciplina, buscar suas provas
         const disciplinasComProvas = await Promise.all(
           data.map(async (disciplina: Disciplina) => {
@@ -30,7 +34,7 @@ export default function DisciplinasPage() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Error fetching disciplinas:", err);
+        console.error("Erro completo:", err);
         setLoading(false);
       });
   }, []);
