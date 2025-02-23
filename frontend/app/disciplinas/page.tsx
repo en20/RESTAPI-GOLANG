@@ -5,11 +5,11 @@ import SearchBar from "../components/SearchBar";
 import DisciplinaCard from "../components/DisciplinaCard";
 import LoadingPulse from "../components/LoadingPulse";
 import { FaSearch, FaGraduationCap } from "react-icons/fa";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { API_URL } from "../config";
 
 export default function DisciplinasPage() {
-  console.log("API_URL configurada:", API_URL);
+  console.log("Todas as env vars:", process.env);
+  console.log("API_URL específica:", process.env.NEXT_PUBLIC_API_URL);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
