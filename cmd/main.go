@@ -68,12 +68,12 @@ func main() {
 		err := dbConnection.QueryRow("SELECT COUNT(*) FROM disciplina").Scan(&count)
 		if err != nil {
 			c.JSON(500, gin.H{
-				"error":    err.Error(),
-				"detail":   "Erro ao consultar banco de dados"
+				"error":  err.Error(),
+				"detail": "Erro ao consultar banco de dados",
 			})
 			return
 		}
-		
+
 		// Buscar uma disciplina para teste
 		var disciplina struct {
 			ID   int
@@ -82,16 +82,16 @@ func main() {
 		err = dbConnection.QueryRow("SELECT id, nome FROM disciplina LIMIT 1").Scan(&disciplina.ID, &disciplina.Nome)
 		if err != nil {
 			c.JSON(500, gin.H{
-				"error":    err.Error(),
-				"detail":   "Erro ao buscar disciplina"
+				"error":  err.Error(),
+				"detail": "Erro ao buscar disciplina",
 			})
 			return
 		}
-		
+
 		c.JSON(200, gin.H{
-			"disciplinas_count": count,
+			"disciplinas_count":  count,
 			"exemplo_disciplina": disciplina,
-			"status":             "conectado"
+			"status":             "conectado",
 		})
 	})
 
