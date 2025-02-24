@@ -93,6 +93,130 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Como Funciona Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900">Como Funciona</h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Siga estes passos simples para começar
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="relative">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                <span className="text-blue-600 font-bold text-xl">1</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">
+                Escolha a Disciplina
+              </h3>
+              <p className="text-gray-600">
+                Navegue pelo catálogo de disciplinas disponíveis do curso de
+                Computação.
+              </p>
+            </div>
+            <div className="relative">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                <span className="text-blue-600 font-bold text-xl">2</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">
+                Selecione o Semestre
+              </h3>
+              <p className="text-gray-600">
+                Encontre provas específicas do semestre que você procura.
+              </p>
+            </div>
+            <div className="relative">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                <span className="text-blue-600 font-bold text-xl">3</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Baixe as Provas</h3>
+              <p className="text-gray-600">
+                Faça o download das provas anteriores para estudar.
+              </p>
+            </div>
+            <div className="relative">
+              <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                <span className="text-blue-600 font-bold text-xl">4</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Contribua</h3>
+              <p className="text-gray-600">
+                Compartilhe suas próprias provas para ajudar outros estudantes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="bg-gray-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900">
+              Perguntas Frequentes
+            </h2>
+            <p className="mt-4 text-xl text-gray-600">
+              Tire suas dúvidas sobre a plataforma
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-2">
+                Quem pode utilizar a plataforma?
+              </h3>
+              <p className="text-gray-600">
+                A plataforma é aberta para todos os estudantes de Ciência da
+                Computação da UFC.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-2">
+                Como posso contribuir?
+              </h3>
+              <p className="text-gray-600">
+                Você pode fazer upload de provas antigas que você possua, sempre
+                respeitando os direitos autorais.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-2">
+                As provas são verificadas?
+              </h3>
+              <p className="text-gray-600">
+                Sim, todas as provas passam por uma verificação básica antes de
+                serem disponibilizadas.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm">
+              <h3 className="text-xl font-semibold mb-2">
+                Posso sugerir melhorias?
+              </h3>
+              <p className="text-gray-600">
+                Claro! Adoramos feedback. Entre em contato conosco com suas
+                sugestões.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-blue-600 text-white py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-8">Comece a Estudar Agora</h2>
+          <p className="text-xl mb-8">
+            Junte-se à nossa comunidade e tenha acesso a centenas de provas
+            antigas
+          </p>
+          <Link
+            href="/disciplinas"
+            className="inline-block bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition"
+          >
+            Explorar Disciplinas
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
