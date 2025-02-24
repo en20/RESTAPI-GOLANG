@@ -46,11 +46,54 @@ export default function DisciplinasPage() {
       });
   }, []);
 
-  const filteredDisciplinas = disciplinas.filter(
-    (disciplina) =>
-      disciplina.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      disciplina.codigo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  function normalizeText(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+      .replace(/[^a-zA-Z0-9\s]/g, "") // Remove caracteres especiais
+      .replace(/\s+/g, " ") // Normaliza espaços
+      .trim();
+  }
+
+  // Adicione esta função de normalização de números
+  function normalizeNumber(text: string): string {
+    const romanToArabic: { [key: string]: string } = {
+      i: "1",
+      ii: "2",
+      iii: "3",
+      iv: "4",
+      v: "5",
+      vi: "6",
+    };
+
+    // Substitui números romanos por arábicos
+    Object.entries(romanToArabic).forEach(([roman, arabic]) => {
+      text = text.replace(new RegExp(`\\b${roman}\\b`, "g"), arabic);
+    });
+
+    return text;
+  }
+
+  const filteredDisciplinas = disciplinas.filter((disciplina) => {
+    if (!searchTerm.trim()) return true;
+
+    const searchNormalized = normalizeNumber(normalizeText(searchTerm));
+    const nomeNormalized = normalizeNumber(normalizeText(disciplina.nome));
+    const codigoNormalized = normalizeText(disciplina.codigo);
+
+    // Adiciona variações comuns para melhorar a busca
+    const textoCompleto = `${nomeNormalized} ${codigoNormalized} ${nomeNormalized.replace(
+      "diferencial e integral",
+      "calculo"
+    )}`;
+
+    const searchWords = searchNormalized
+      .split(/\s+/)
+      .filter((word) => word.length > 0);
+
+    return searchWords.every((word) => textoCompleto.includes(word));
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
