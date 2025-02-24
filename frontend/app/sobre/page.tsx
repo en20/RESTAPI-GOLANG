@@ -211,7 +211,7 @@ export default function SobrePage() {
           {/* GitHub Section */}
           <div className="text-center">
             <a
-              href="https://github.com/seu-usuario/ufc-provas"
+              href="https://github.com/en20/RESTAPI-GOLANG"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors"
