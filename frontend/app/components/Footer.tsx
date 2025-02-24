@@ -71,7 +71,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/seu-usuario"
+                  href="https://github.com/en20"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-base text-gray-500 hover:text-blue-600 transition-colors flex items-center gap-2"
@@ -82,7 +82,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://linkedin.com/in/seu-perfil"
+                  href="https://www.linkedin.com/in/enzo-lozano-abreu/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-base text-gray-500 hover:text-blue-600 transition-colors flex items-center gap-2"
@@ -99,8 +99,8 @@ export default function Footer() {
         <div className="mt-8 pt-8 border-t border-gray-100">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm">
-              &copy; {new Date().getFullYear()} UFC Provas. Todos os direitos
-              reservados.
+              &copy; {new Date().getFullYear()} Enzo Lozano Abreu. Todos os
+              direitos reservados.
             </p>
             <div className="flex items-center gap-6 mt-4 md:mt-0">
               <a

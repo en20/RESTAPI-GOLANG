@@ -111,76 +111,95 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile menu drawer */}
+        {/* Mobile menu */}
         <div
-          className={`fixed inset-0 bg-gray-600 bg-opacity-50 transition-opacity duration-300 ${
-            isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          onClick={() => setIsOpen(false)}
-        />
-        <div
-          className={`fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
+          className={`md:hidden fixed inset-0 z-50 transition-opacity duration-300 ease-in-out ${
+            isOpen
+              ? "pointer-events-auto opacity-100"
+              : "pointer-events-none opacity-0"
           }`}
         >
-          <div className="flex items-center justify-between p-4 border-b border-gray-100">
-            <span className="text-lg font-semibold text-gray-800">Menu</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <FaTimes size={24} />
-            </button>
-          </div>
-          <div className="px-2 py-6 space-y-1">
-            <Link
-              href="/"
-              className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                isActive("/")
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              <FaGraduationCap size={20} style={{ marginRight: "0.5rem" }} />
-              Home
-            </Link>
-            <Link
-              href="/disciplinas"
-              className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                isActive("/disciplinas")
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              <FaBook size={20} style={{ marginRight: "0.5rem" }} />
-              Disciplinas
-            </Link>
-            <Link
-              href="/disciplinas/semestre"
-              className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                isActive("/disciplinas/semestre")
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              <FaGraduationCap size={20} style={{ marginRight: "0.5rem" }} />
-              Por Semestre
-            </Link>
-            <Link
-              href="/sobre"
-              className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
-                isActive("/sobre")
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              <FaInfoCircle size={20} style={{ marginRight: "0.5rem" }} />
-              Sobre
-            </Link>
+          {/* Overlay escuro com fade */}
+          <div
+            className={`fixed inset-0 bg-black transition-opacity duration-300 ease-in-out ${
+              isOpen ? "opacity-50" : "opacity-0"
+            }`}
+            onClick={() => setIsOpen(false)}
+          />
+
+          {/* Menu drawer com slide */}
+          <div
+            className={`fixed inset-y-0 right-0 max-w-xs w-full bg-white shadow-lg z-50 transform transition-all duration-300 ease-in-out ${
+              isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="flex flex-col h-full">
+              <div className="flex items-center justify-between p-4">
+                <h2 className="text-xl font-semibold">Menu</h2>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 rounded-md hover:bg-gray-100"
+                >
+                  <FaTimes className="h-6 w-6" />
+                </button>
+              </div>
+              <div className="flex-1 px-4 py-2 overflow-y-auto">
+                <Link
+                  href="/"
+                  className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
+                    isActive("/")
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaGraduationCap
+                    size={20}
+                    style={{ marginRight: "0.5rem" }}
+                  />
+                  Home
+                </Link>
+                <Link
+                  href="/disciplinas"
+                  className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
+                    isActive("/disciplinas")
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaBook size={20} style={{ marginRight: "0.5rem" }} />
+                  Disciplinas
+                </Link>
+                <Link
+                  href="/disciplinas/semestre"
+                  className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
+                    isActive("/disciplinas/semestre")
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaGraduationCap
+                    size={20}
+                    style={{ marginRight: "0.5rem" }}
+                  />
+                  Por Semestre
+                </Link>
+                <Link
+                  href="/sobre"
+                  className={`flex items-center px-4 py-3 rounded-md text-base font-medium transition-colors ${
+                    isActive("/sobre")
+                      ? "bg-blue-50 text-blue-600"
+                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <FaInfoCircle size={20} style={{ marginRight: "0.5rem" }} />
+                  Sobre
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </nav>

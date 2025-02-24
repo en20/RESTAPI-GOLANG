@@ -41,8 +41,8 @@ export default function Home() {
                 Encontre Facilmente
               </h3>
               <p className="text-gray-600">
-                Busque provas por disciplina, semestre ou professor. Organize
-                seus estudos de forma eficiente.
+                Busque provas por disciplina e semestre. Organize seus estudos
+                de forma eficiente.
               </p>
             </div>
             <div className="text-center">
@@ -79,11 +79,11 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">50+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">30+</div>
               <div className="text-gray-600">Disciplinas Cadastradas</div>
             </div>
             <div className="bg-white p-8 rounded-lg shadow-sm text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">200+</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">150+</div>
               <div className="text-gray-600">Provas Disponíveis</div>
             </div>
             <div className="bg-white p-8 rounded-lg shadow-sm text-center">
