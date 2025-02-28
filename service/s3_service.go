@@ -47,7 +47,7 @@ func (s *S3Service) UploadFile(file *multipart.FileHeader, productID int) (strin
 	}
 
 	// Create unique key for the file
-	key := fmt.Sprintf("products/%d/%s", productID, file.Filename)
+	key := fmt.Sprintf("provas/%d/%s", productID, file.Filename)
 
 	// Upload to S3
 	_, err = s.s3Client.PutObject(&s3.PutObjectInput{

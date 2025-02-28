@@ -25,10 +25,6 @@ func main() {
 	DisciplinaUsecase := usecase.NewDisciplinaUsecase(DisciplinaRepository)
 	DisciplinaController := controller.NewDisciplinaController(DisciplinaUsecase)
 
-	ProductRepository := repository.NewProductRepository(dbConnection)
-	ProductUsecase := usecase.NewProductUsecase(ProductRepository)
-	ProductController := controller.NewProductController(ProductUsecase)
-
 	server.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -46,13 +42,6 @@ func main() {
 		})
 	})
 
-	server.GET("/products", ProductController.GetProducts)
-	server.GET("/product/:id", ProductController.GetProductByID)
-	server.POST("/product", ProductController.CreateProduct)
-	server.PUT("/product/:id", ProductController.UpdateProduct)
-	server.DELETE("/product/:id", ProductController.DeleteProduct)
-	server.POST("/product/:id/files", ProductController.UploadProductFiles)
-
 	// Rotas da Disciplina
 	server.GET("/disciplinas", DisciplinaController.GetDisciplinas)
 	server.POST("/disciplina", DisciplinaController.CreateDisciplina)
@@ -61,7 +50,6 @@ func main() {
 	server.DELETE("/disciplina/:id", DisciplinaController.DeleteDisciplina)
 	server.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
 	server.GET("/download/prova", DisciplinaController.DownloadProva)
-	server.GET("/download/file", ProductController.DownloadFile)
 	server.POST("/sync-provas", DisciplinaController.SyncProvas)
 
 	server.GET("/test-db", func(c *gin.Context) {
