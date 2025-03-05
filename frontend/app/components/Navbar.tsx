@@ -43,30 +43,26 @@ export default function Navbar() {
               </div>
 
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {isAuthenticated && (
-                  <>
-                    <Link
-                      href="/disciplinas"
-                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                        isActive("/disciplinas")
-                          ? "border-blue-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                      }`}
-                    >
-                      <FaBook className="mr-1" /> Disciplinas
-                    </Link>
-                    <Link
-                      href="/disciplinas/semestre"
-                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                        isActive("/disciplinas/semestre")
-                          ? "border-blue-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                      }`}
-                    >
-                      <FaCalendarAlt className="mr-1" /> Semestre
-                    </Link>
-                  </>
-                )}
+                <Link
+                  href="/disciplinas"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive("/disciplinas")
+                      ? "border-blue-500 text-gray-900"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaBook className="mr-1" /> Disciplinas
+                </Link>
+                <Link
+                  href="/disciplinas/semestre"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive("/disciplinas/semestre")
+                      ? "border-blue-500 text-gray-900"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaCalendarAlt className="mr-1" /> Semestre
+                </Link>
                 <Link
                   href="/sobre"
                   className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
