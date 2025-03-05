@@ -25,6 +25,10 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  const handleNavigation = () => {
+    setIsOpen(false);
+  };
+
   return (
     <IconContext.Provider value={{ className: "inline-block" }}>
       <nav className="bg-white shadow-lg">
@@ -121,70 +125,106 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {isOpen && (
-          <div className="sm:hidden">
-            <div className="pt-2 pb-3 space-y-1">
-              {isAuthenticated && (
-                <>
-                  <Link
-                    href="/disciplinas"
-                    className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                      isActive("/disciplinas")
-                        ? "border-blue-500 text-blue-700 bg-blue-50"
-                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                    }`}
-                  >
-                    <FaBook className="mr-1" /> Disciplinas
-                  </Link>
-                  <Link
-                    href="/disciplinas/semestre"
-                    className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                      isActive("/disciplinas/semestre")
-                        ? "border-blue-500 text-blue-700 bg-blue-50"
-                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                    }`}
-                  >
-                    <FaCalendarAlt className="mr-1" /> Semestre
-                  </Link>
-                </>
-              )}
-              <Link
-                href="/sobre"
-                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                  isActive("/sobre")
-                    ? "border-blue-500 text-blue-700 bg-blue-50"
-                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                }`}
+        {/* Overlay */}
+        <div
+          className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 ease-in-out ${
+            isOpen ? "opacity-100 z-40" : "opacity-0 pointer-events-none"
+          }`}
+          onClick={() => setIsOpen(false)}
+        />
+
+        {/* Mobile menu drawer */}
+        <div
+          className={`fixed top-0 right-0 h-full w-64 bg-white transform transition-transform duration-300 ease-in-out z-50 ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="p-4 ">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="float-right text-gray-500 hover:text-gray-700"
+            >
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <FaInfoCircle className="mr-1" /> Sobre
-              </Link>
-              {isAuthenticated ? (
-                <button
-                  onClick={logout}
-                  className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                >
-                  <FaSignOutAlt className="mr-1" /> Sair
-                </button>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/register"
-                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Registrar
-                  </Link>
-                </>
-              )}
-            </div>
+                <path d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
           </div>
-        )}
+          <div className="pt-2 pb-3 space-y-1">
+            {isAuthenticated && (
+              <>
+                <Link
+                  href="/disciplinas"
+                  onClick={handleNavigation}
+                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                    isActive("/disciplinas")
+                      ? "border-blue-500 text-blue-700 bg-blue-50"
+                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaBook className="mr-1" /> Disciplinas
+                </Link>
+                <Link
+                  href="/disciplinas/semestre"
+                  onClick={handleNavigation}
+                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                    isActive("/disciplinas/semestre")
+                      ? "border-blue-500 text-blue-700 bg-blue-50"
+                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaCalendarAlt className="mr-1" /> Semestre
+                </Link>
+              </>
+            )}
+            <Link
+              href="/sobre"
+              onClick={handleNavigation}
+              className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                isActive("/sobre")
+                  ? "border-blue-500 text-blue-700 bg-blue-50"
+                  : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+              }`}
+            >
+              <FaInfoCircle className="mr-1" /> Sobre
+            </Link>
+            {isAuthenticated ? (
+              <button
+                onClick={() => {
+                  handleNavigation();
+                  logout();
+                }}
+                className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+              >
+                <FaSignOutAlt className="mr-1" /> Sair
+              </button>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={handleNavigation}
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={handleNavigation}
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                >
+                  Registrar
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
       </nav>
     </IconContext.Provider>
   );
