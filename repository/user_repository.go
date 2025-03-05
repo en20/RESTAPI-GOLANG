@@ -62,3 +62,14 @@ func (r *UserRepository) GetAllUsers() ([]model.User, error) {
 	}
 	return users, nil
 }
+
+func (r *UserRepository) FindByID(id int) (model.User, error) {
+	var user model.User
+	query := `
+		SELECT id, name, email, password, role
+		FROM users
+		WHERE id = $1
+	`
+	err := r.db.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.Role)
+	return user, err
+}

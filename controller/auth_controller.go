@@ -98,3 +98,24 @@ func (ac *AuthController) GetAllUsers(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, users)
 }
+
+func (ac *AuthController) GetUser(c *gin.Context) {
+	// Pegar o ID do usuário do contexto (setado pelo middleware de autenticação)
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "usuário não autenticado"})
+		return
+	}
+
+	// Buscar usuário no banco
+	user, err := ac.userRepo.FindByID(userID.(int))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "erro ao buscar usuário"})
+		return
+	}
+
+	// Não retornar a senha
+	user.Password = ""
+
+	c.JSON(http.StatusOK, user)
+}
