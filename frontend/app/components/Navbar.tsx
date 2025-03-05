@@ -9,6 +9,7 @@ import {
   FaUser,
   FaSignOutAlt,
   FaBars,
+  FaCalendarAlt,
 } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { useAuth } from "../contexts/AuthContext";
@@ -39,16 +40,28 @@ export default function Navbar() {
 
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                 {isAuthenticated && (
-                  <Link
-                    href="/disciplinas"
-                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                      isActive("/disciplinas")
-                        ? "border-blue-500 text-gray-900"
-                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                    }`}
-                  >
-                    <FaBook className="mr-1" /> Disciplinas
-                  </Link>
+                  <>
+                    <Link
+                      href="/disciplinas"
+                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                        isActive("/disciplinas")
+                          ? "border-blue-500 text-gray-900"
+                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                      }`}
+                    >
+                      <FaBook className="mr-1" /> Disciplinas
+                    </Link>
+                    <Link
+                      href="/disciplinas/semestre"
+                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                        isActive("/disciplinas/semestre")
+                          ? "border-blue-500 text-gray-900"
+                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                      }`}
+                    >
+                      <FaCalendarAlt className="mr-1" /> Semestre
+                    </Link>
+                  </>
                 )}
                 <Link
                   href="/sobre"
@@ -113,16 +126,28 @@ export default function Navbar() {
           <div className="sm:hidden">
             <div className="pt-2 pb-3 space-y-1">
               {isAuthenticated && (
-                <Link
-                  href="/disciplinas"
-                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                    isActive("/disciplinas")
-                      ? "border-blue-500 text-blue-700 bg-blue-50"
-                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
-                  }`}
-                >
-                  <FaBook className="mr-1" /> Disciplinas
-                </Link>
+                <>
+                  <Link
+                    href="/disciplinas"
+                    className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                      isActive("/disciplinas")
+                        ? "border-blue-500 text-blue-700 bg-blue-50"
+                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    <FaBook className="mr-1" /> Disciplinas
+                  </Link>
+                  <Link
+                    href="/disciplinas/semestre"
+                    className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                      isActive("/disciplinas/semestre")
+                        ? "border-blue-500 text-blue-700 bg-blue-50"
+                        : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    <FaCalendarAlt className="mr-1" /> Semestre
+                  </Link>
+                </>
               )}
               <Link
                 href="/sobre"
