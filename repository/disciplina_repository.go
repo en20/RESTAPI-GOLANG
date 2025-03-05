@@ -204,3 +204,28 @@ func (d *DisciplinaRepository) DeleteProva(provaID int) error {
 	_, err := d.connection.Exec(query, provaID)
 	return err
 }
+
+func (d *DisciplinaRepository) GetDisciplinasBySemestre(semestre int) ([]model.Disciplina, error) {
+	query := `
+		SELECT id, codigo, nome, descricao, semestre
+		FROM disciplina
+		WHERE semestre = $1
+		ORDER BY codigo
+	`
+	rows, err := d.connection.Query(query, semestre)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var disciplinas []model.Disciplina
+	for rows.Next() {
+		var d model.Disciplina
+		err := rows.Scan(&d.ID, &d.Codigo, &d.Nome, &d.Descricao, &d.Semestre)
+		if err != nil {
+			return nil, err
+		}
+		disciplinas = append(disciplinas, d)
+	}
+	return disciplinas, nil
+}

@@ -53,3 +53,7 @@ func (d *DisciplinaUsecase) GetAllProvas() ([]model.Prova, error) {
 func (d *DisciplinaUsecase) DeleteProva(provaID int) error {
 	return d.repository.DeleteProva(provaID)
 }
+
+func (d *DisciplinaUsecase) GetDisciplinasBySemestre(semestre int) ([]model.Disciplina, error) {
+	return d.repository.GetDisciplinasBySemestre(semestre)
+}

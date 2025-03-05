@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   FaGraduationCap,
@@ -8,6 +8,7 @@ import {
   FaInfoCircle,
   FaUser,
   FaSignOutAlt,
+  FaBars,
 } from "react-icons/fa";
 import { IconContext } from "react-icons";
 import { useAuth } from "../contexts/AuthContext";
@@ -17,16 +18,11 @@ export default function Navbar() {
   const pathname = usePathname();
   const { isAuthenticated, user, logout } = useAuth();
 
-  // Prevenir scroll quando o menu está aberto
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [isOpen]);
-
   const isActive = (path: string) => pathname === path;
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
     <IconContext.Provider value={{ className: "inline-block" }}>
@@ -42,31 +38,28 @@ export default function Navbar() {
               </div>
 
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {isAuthenticated ? (
-                  <>
-                    <Link
-                      href="/disciplinas"
-                      className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                        isActive("/disciplinas")
-                          ? "border-blue-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                      }`}
-                    >
-                      <FaBook className="mr-1" /> Disciplinas
-                    </Link>
-                  </>
-                ) : (
+                {isAuthenticated && (
                   <Link
-                    href="/sobre"
+                    href="/disciplinas"
                     className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                      isActive("/sobre")
+                      isActive("/disciplinas")
                         ? "border-blue-500 text-gray-900"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
                   >
-                    <FaInfoCircle className="mr-1" /> Sobre
+                    <FaBook className="mr-1" /> Disciplinas
                   </Link>
                 )}
+                <Link
+                  href="/sobre"
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                    isActive("/sobre")
+                      ? "border-blue-500 text-gray-900"
+                      : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaInfoCircle className="mr-1" /> Sobre
+                </Link>
               </div>
             </div>
 
@@ -102,8 +95,71 @@ export default function Navbar() {
                 </div>
               )}
             </div>
+
+            {/* Mobile menu button */}
+            <div className="flex items-center sm:hidden">
+              <button
+                onClick={toggleMenu}
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+              >
+                <FaBars className="h-6 w-6" />
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {isOpen && (
+          <div className="sm:hidden">
+            <div className="pt-2 pb-3 space-y-1">
+              {isAuthenticated && (
+                <Link
+                  href="/disciplinas"
+                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                    isActive("/disciplinas")
+                      ? "border-blue-500 text-blue-700 bg-blue-50"
+                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  }`}
+                >
+                  <FaBook className="mr-1" /> Disciplinas
+                </Link>
+              )}
+              <Link
+                href="/sobre"
+                className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                  isActive("/sobre")
+                    ? "border-blue-500 text-blue-700 bg-blue-50"
+                    : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                }`}
+              >
+                <FaInfoCircle className="mr-1" /> Sobre
+              </Link>
+              {isAuthenticated ? (
+                <button
+                  onClick={logout}
+                  className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                >
+                  <FaSignOutAlt className="mr-1" /> Sair
+                </button>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    href="/register"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700"
+                  >
+                    Registrar
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
     </IconContext.Provider>
   );

@@ -25,11 +25,26 @@ func NewDisciplinaController(usecase usecase.DisciplinaUsecase) disciplinaContro
 }
 
 func (d *disciplinaController) GetDisciplinas(c *gin.Context) {
-	disciplinas, err := d.disciplinaUsecase.GetDisciplinas()
+	semestre := c.Query("semestre")
+	var disciplinas []model.Disciplina
+	var err error
+
+	if semestre != "" {
+		semestreInt, err := strconv.Atoi(semestre)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "semestre inválido"})
+			return
+		}
+		disciplinas, err = d.disciplinaUsecase.GetDisciplinasBySemestre(semestreInt)
+	} else {
+		disciplinas, err = d.disciplinaUsecase.GetDisciplinas()
+	}
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, disciplinas)
 }
 
