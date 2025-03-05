@@ -17,12 +17,11 @@ export default function DisciplinasPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
   const [loading, setLoading] = useState(true);
-  const { isAuthenticated, getAuthToken } = useAuth();
+  const { isAuthenticated, token } = useAuth();
 
   useEffect(() => {
     const fetchDisciplinas = async () => {
       try {
-        const token = getAuthToken();
         const response = await fetch(`${API_URL}/disciplinas`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -60,8 +59,10 @@ export default function DisciplinasPage() {
       }
     };
 
-    fetchDisciplinas();
-  }, []);
+    if (token) {
+      fetchDisciplinas();
+    }
+  }, [token]);
 
   function normalizeText(text: string): string {
     return text
