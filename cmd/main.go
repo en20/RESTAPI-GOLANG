@@ -54,19 +54,24 @@ func main() {
 	server.POST("/auth/login", authController.Login)
 	server.GET("/users", authController.GetAllUsers)
 
+	// Rotas públicas de disciplinas
+	server.GET("/disciplinas", DisciplinaController.GetDisciplinas)
+	server.GET("/disciplina/:id", DisciplinaController.GetDisciplinaByID)
+
 	// Protected routes group
 	protected := server.Group("")
 	protected.Use(middleware.AuthMiddleware(authService))
 	{
-		// Rotas da Disciplina
-		protected.GET("/disciplinas", DisciplinaController.GetDisciplinas)
+		// Rotas protegidas de disciplinas
 		protected.POST("/disciplina", DisciplinaController.CreateDisciplina)
-		protected.GET("/disciplina/:id", DisciplinaController.GetDisciplinaByID)
 		protected.PUT("/disciplina/:id", DisciplinaController.UpdateDisciplina)
 		protected.DELETE("/disciplina/:id", DisciplinaController.DeleteDisciplina)
 		protected.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
 		protected.GET("/download/prova", DisciplinaController.DownloadProva)
 		protected.POST("/sync-provas", DisciplinaController.SyncProvas)
+
+		// Rotas protegidas de usuário
+		protected.GET("/user", authController.GetUser)
 	}
 
 	server.GET("/test-db", func(c *gin.Context) {
