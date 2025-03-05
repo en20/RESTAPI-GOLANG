@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -32,8 +33,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${poppins.className} min-h-screen flex flex-col`}>
-        <Navbar />
-        <main className="flex-grow">{children}</main>
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+        </AuthProvider>
         <Footer />
       </body>
     </html>

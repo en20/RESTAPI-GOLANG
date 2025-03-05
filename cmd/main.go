@@ -3,7 +3,9 @@ package main
 import (
 	"go-api/controller"
 	"go-api/db"
+	"go-api/middleware"
 	"go-api/repository"
+	"go-api/service"
 	"go-api/usecase"
 
 	"os"
@@ -25,6 +27,11 @@ func main() {
 	DisciplinaUsecase := usecase.NewDisciplinaUsecase(DisciplinaRepository)
 	DisciplinaController := controller.NewDisciplinaController(DisciplinaUsecase)
 
+	// Auth Services
+	authService := service.NewAuthService()
+	userRepository := repository.NewUserRepository(dbConnection)
+	authController := controller.NewAuthController(userRepository, authService)
+
 	server.Use(func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
@@ -42,15 +49,25 @@ func main() {
 		})
 	})
 
-	// Rotas da Disciplina
-	server.GET("/disciplinas", DisciplinaController.GetDisciplinas)
-	server.POST("/disciplina", DisciplinaController.CreateDisciplina)
-	server.GET("/disciplina/:id", DisciplinaController.GetDisciplinaByID)
-	server.PUT("/disciplina/:id", DisciplinaController.UpdateDisciplina)
-	server.DELETE("/disciplina/:id", DisciplinaController.DeleteDisciplina)
-	server.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
-	server.GET("/download/prova", DisciplinaController.DownloadProva)
-	server.POST("/sync-provas", DisciplinaController.SyncProvas)
+	// Public routes
+	server.POST("/auth/register", authController.Register)
+	server.POST("/auth/login", authController.Login)
+	server.GET("/users", authController.GetAllUsers)
+
+	// Protected routes group
+	protected := server.Group("")
+	protected.Use(middleware.AuthMiddleware(authService))
+	{
+		// Rotas da Disciplina
+		protected.GET("/disciplinas", DisciplinaController.GetDisciplinas)
+		protected.POST("/disciplina", DisciplinaController.CreateDisciplina)
+		protected.GET("/disciplina/:id", DisciplinaController.GetDisciplinaByID)
+		protected.PUT("/disciplina/:id", DisciplinaController.UpdateDisciplina)
+		protected.DELETE("/disciplina/:id", DisciplinaController.DeleteDisciplina)
+		protected.POST("/disciplina/:id/provas", DisciplinaController.UploadProva)
+		protected.GET("/download/prova", DisciplinaController.DownloadProva)
+		protected.POST("/sync-provas", DisciplinaController.SyncProvas)
+	}
 
 	server.GET("/test-db", func(c *gin.Context) {
 		var count int
