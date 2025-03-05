@@ -26,14 +26,3 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ); 
-
--- Após a criação da tabela users, adicione:
-INSERT INTO users (name, email, password, role, created_at, updated_at) 
-VALUES (
-    'Admin',
-    'admin@admin.com',
-    '$2a$14$C1DIYDsmE0QHjje4wR5uwOYgpnM8ykE4xScZ.knB.sFsWcRrPKhLK', -- senha: admin123
-    'admin',
-    CURRENT_TIMESTAMP,
-    CURRENT_TIMESTAMP
-) ON CONFLICT (email) DO NOTHING; 

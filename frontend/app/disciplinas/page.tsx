@@ -7,6 +7,7 @@ import LoadingPulse from "../components/LoadingPulse";
 import { FaSearch, FaGraduationCap } from "react-icons/fa";
 import { API_URL } from "../config";
 import ProtectedRoute from "../components/ProtectedRoute";
+import { getAuthToken } from "../contexts/AuthContext";
 
 export default function DisciplinasPage() {
   console.log("Todas as env vars:", process.env);
@@ -17,20 +18,30 @@ export default function DisciplinasPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log("Fazendo fetch de:", `${API_URL}/disciplinas`);
-    fetch(`${API_URL}/disciplinas`)
-      .then((res) => {
-        console.log("Status da resposta:", res.status);
-        return res.json();
-      })
-      .then(async (data) => {
-        console.log("Dados recebidos:", data);
+    const fetchDisciplinas = async () => {
+      try {
+        const token = getAuthToken();
+        const response = await fetch(`${API_URL}/disciplinas`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch");
+        }
+
+        const data = await response.json();
+
         // Para cada disciplina, buscar suas provas
         const disciplinasComProvas = await Promise.all(
           data.map(async (disciplina: Disciplina) => {
-            const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`);
+            const res = await fetch(`${API_URL}/disciplina/${disciplina.id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
             const disciplinaCompleta = await res.json();
-            // Filtrar apenas provas válidas (que ainda existem no S3)
             disciplinaCompleta.provas =
               disciplinaCompleta.provas?.filter(
                 (prova: Prova) => prova.url && prova.url.trim() !== ""
@@ -38,13 +49,16 @@ export default function DisciplinasPage() {
             return disciplinaCompleta;
           })
         );
+
         setDisciplinas(disciplinasComProvas);
+      } catch (error) {
+        console.error("Erro ao buscar disciplinas:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Erro completo:", err);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchDisciplinas();
   }, []);
 
   function normalizeText(text: string): string {

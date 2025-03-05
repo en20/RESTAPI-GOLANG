@@ -120,3 +120,7 @@ export function useAuth() {
   }
   return context;
 }
+
+export function getAuthToken() {
+  return localStorage.getItem("token");
+}
