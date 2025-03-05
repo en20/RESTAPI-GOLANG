@@ -107,7 +107,7 @@ export default function DisciplinasPage() {
             <h1 className="text-4xl font-bold text-white mb-4">Disciplinas</h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto">
               Encontre provas antigas das disciplinas do curso de Ciência da
-              Computação
+              Computação.
             </p>
           </div>
         </div>
