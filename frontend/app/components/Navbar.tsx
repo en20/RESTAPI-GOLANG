@@ -38,7 +38,7 @@ export default function Navbar() {
               <div className="flex-shrink-0 flex items-center">
                 <Link href="/" className="text-xl font-bold text-blue-600">
                   <FaGraduationCap className="inline-block mr-2" />
-                  Portal Acadêmico
+                  Leite Provas
                 </Link>
               </div>
 
