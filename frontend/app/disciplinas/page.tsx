@@ -7,7 +7,7 @@ import LoadingPulse from "../components/LoadingPulse";
 import { FaSearch, FaGraduationCap } from "react-icons/fa";
 import { API_URL } from "../config";
 import ProtectedRoute from "../components/ProtectedRoute";
-import { getAuthToken } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import AuthRequired from "../components/AuthRequired";
 
 export default function DisciplinasPage() {
@@ -17,7 +17,7 @@ export default function DisciplinasPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
   const [loading, setLoading] = useState(true);
-  const { isAuthenticated } = getAuthToken();
+  const { isAuthenticated, getAuthToken } = useAuth();
 
   useEffect(() => {
     const fetchDisciplinas = async () => {
